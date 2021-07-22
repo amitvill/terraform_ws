@@ -1,22 +1,21 @@
-terraform {
-	required_providers {
-		docker = {
-			source = "kreuzwerker/docker"
-		}
-	}	
+
+module "image" {
+	source = "./image"
 }
 
-provider docker {}
-
-resource "docker_image" "container_image" {
-	name = var.image 
+resource "random_string" "random" {
+  count = local.container_count
+  length = 4
+  special = false
+  upper = false
 }
 
-resource "docker_container" "grafana_container" {
-	count = var.count_container 
-	name = "grafana-${count.index}"
-	image= docker_image.container_image.latest
-	ports {
-		external = ext_port[count.index]
-	} 
+resource "docker_container" "nodered_container" {
+  count = local.container_count
+  name  = join("-",["nodered", terraform.workspace, random_string.random[count.index].result])
+  image = module.image.image_out
+  ports {
+    internal = var.internal_port
+    external = var.external_port[terraform.workspace][count.index]
+  }
 }
