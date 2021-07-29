@@ -7,7 +7,7 @@ locals {
       in_port         = var.internal_port["nodered"].value
       ext_port        = var.external_port["nodered"][terraform.workspace]
       volumes = [
-        {container_path_each  = "/data"}
+        { container_path_each = "/data" }
       ]
     }
     influxdb = {
@@ -15,9 +15,9 @@ locals {
       container_count = length(var.external_port["influxdb"][terraform.workspace])
       image           = var.image["influxdb"][terraform.workspace]
       in_port         = var.internal_port["influxdb"].value
-      ext_port        = var.external_port["influxdb"][terraform.workspace]      
+      ext_port        = var.external_port["influxdb"][terraform.workspace]
       volumes = [
-        {container_path_each  = "/var/lib/influxdb"}
+        { container_path_each = "/var/lib/influxdb" }
       ]
     }
     grafana = {

@@ -9,7 +9,7 @@ resource "docker_volume" "container_volume" {
     command    = "mkdir ${path.cwd}/../backup"
     on_failure = continue
   }
-  
+
   # provisioner "local-exec" {
   #   when       = destroy
   #   command    = "tar -czvf ${path.cwd}/../backup/${self.name}.tar.gz ${self.mountpoint}"
